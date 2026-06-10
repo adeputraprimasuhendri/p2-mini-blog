@@ -20,7 +20,6 @@
                     <h1 class="post-title">{{ post.title }}</h1>
                     <div class="post-meta">
                         <span class="meta-item">📅 {{ formatDate(post.createdAt) }}</span>
-                        <span class="meta-item">👤 Oleh: Admin</span>
                     </div>
                 </header>
 
@@ -44,10 +43,12 @@ const postId = route.params.id
 // 2. Ambil URL API dari runtimeConfig
 const config = useRuntimeConfig()
 
-// 3. Fetch data spesifik artikel berdasarkan ID secara SSR
-const { data: post, pending, error } = await useFetch(`${config.public.apiBase}/posts/${postId}`)
+// 3. Fetch data artikel berdasarkan ID
+const { data: post, pending, error } = await useFetch(`${config.public.apiBase}/posts/${postId}`, {
+    server: false
+})
 
-// 4. DINAMIS SEO: Judul tab browser akan berubah otomatis mengikuti judul artikel
+// 4. SEO: Judul tab browser akan berubah otomatis mengikuti judul artikel
 useHead({
     title: post.value ? `${post.value.title} - Blog Saya` : 'Membaca Artikel...',
     meta: [

@@ -2,7 +2,7 @@
     <div class="blog-wrapper">
         <!-- Header Blog -->
         <header class="blog-header">
-            <h1>Selamat Datang di Blog Saya</h1>
+            <h1>Selamat Datang di Mini Blog</h1>
             <p class="subtitle">Berbagi cerita, teknologi, dan tutorial menarik.</p>
         </header>
 
@@ -42,8 +42,10 @@
 // Mengambil base URL API dari runtimeConfig di nuxt.config.ts
 const config = useRuntimeConfig()
 
-// Mengambil data secara SSR dari backend Spring Boot
-const { data: posts, pending, error, refresh } = await useFetch(`${config.public.apiBase}/posts`)
+// Mengambil data dari backend Spring Boot
+const { data: posts, pending, error, refresh } = await useFetch(`${config.public.apiBase}/posts`, {
+    server: false
+})
 
 // Fungsi pembantu untuk memotong teks isi blog yang terlalu panjang
 const truncate = (text) => {

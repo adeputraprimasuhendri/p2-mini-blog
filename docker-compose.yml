@@ -1,0 +1,36 @@
+services:
+  # 1. Database Service
+  db:
+    image: postgres:15-alpine
+    container_name: blog-db
+    environment:
+      POSTGRES_DB: blogdb
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: secret
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  # 2. Backend Service (Spring Boot)
+  backend:
+    build: ./backend
+    container_name: blog-backend
+    ports:
+      - "8080:8080"
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/blogdb
+    depends_on:
+      - db
+
+  # 3. Frontend Service (Nuxt.js)
+  frontend:
+    build: ./frontend
+    container_name: blog-frontend
+    ports:
+      - "3000:3000"
+    depends_on:
+      - backend
+
+volumes:
+  postgres_data:
